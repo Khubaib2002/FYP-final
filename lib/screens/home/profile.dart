@@ -171,7 +171,6 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:agaahi/services/auth.dart';
 import 'package:agaahi/screens/home/editpro.dart';
-import 'package:agaahi/screens/home/settings.dart';
 import 'package:agaahi/screens/home/help.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -280,12 +279,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     label: 'Edit Profile',
                     screen: EditProfileScreen(),
                   ),
-                  buildOption(
-                    context,
-                    icon: Icons.settings_outlined,
-                    label: 'Settings',
-                    screen: const SettingsScreen(),
-                  ),
+                  // buildOption(
+                  //   context,
+                  //   icon: Icons.settings_outlined,
+                  //   label: 'Settings',
+                  //   screen: const SettingsScreen(),
+                  // ),
                   buildOption(
                     context,
                     icon: Icons.help_outline,

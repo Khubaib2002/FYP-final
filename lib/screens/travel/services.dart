@@ -2,16 +2,11 @@ import 'package:agaahi/screens/freight/perishable.dart';
 import 'package:agaahi/screens/events/eventer.dart';
 import 'package:flutter/material.dart';
 import 'package:agaahi/services/auth.dart';
+import 'package:agaahi/screens/travel/travel_main.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:agaahi/screens/home/profile.dart';
 import 'package:agaahi/screens/home/homepage.dart';
 import 'package:agaahi/screens/maps/weather_map.dart';
-// import 'package:agaahi/screens/travel/traveller.dart';
-
-import 'package:agaahi/screens/travel/travel_main.dart';
-
-
-
 
 class Services extends StatelessWidget {
   final int selectedIndex;
@@ -79,10 +74,10 @@ class Services extends StatelessWidget {
                     label: 'EVENTS',
                     subtitle: "Plan your events seamlessly.",
                     gradientColors: [Colors.blue, Colors.lightBlueAccent],
-                    onPressed: ()  {
+                    onPressed: () {
                       Navigator.push(
                         context,
-                        _createPageRoute(const Eventer()),
+                        MaterialPageRoute(builder: (context) => const Eventer()), // Correct widget usage
                       );
                     },
                   ).animate().fadeIn().slideX(),
@@ -95,7 +90,7 @@ class Services extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        _createPageRoute(const TravelRouteScreen()),
+                        MaterialPageRoute(builder: (context) => const TravelRouteScreen()), // Correct widget usage
                       );
                     },
                   ).animate().fadeIn().slideX(),
@@ -103,7 +98,7 @@ class Services extends StatelessWidget {
                   _buildFullWidthButton(
                     icon: Icons.local_shipping_outlined,
                     label: 'FREIGHT',
-                    subtitle: "Track your freight shipments.",
+                    subtitle: "Track your freight shipment.",
                     gradientColors: [Colors.blueGrey, Colors.cyanAccent],
                     onPressed: () {
                       Navigator.push(

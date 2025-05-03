@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:agaahi/screens/freight/fright.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
   final String itemName;
@@ -36,82 +37,13 @@ class ItemDetailsScreen extends StatelessWidget {
   // ───────────────────────── build ─────────────────────────
   @override
   Widget build(BuildContext context) {
-    final TextEditingController startLocationController = TextEditingController();
-    final TextEditingController stopLocationController = TextEditingController();
-
     return Scaffold(
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      appBar: AppBar(
-        title: const Text(
-          'ROUTE',
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              fontFamily: 'Raleway'),
-        ),
-        backgroundColor: Colors.blue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 8),
-                  Image.asset(imagePath, height: 150), // Display item image
-                  const SizedBox(height: 15),
-                  Text(
-                    itemName,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: startLocationController,
-              decoration: const InputDecoration(
-                labelText: 'Start Location',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: stopLocationController,
-              decoration: const InputDecoration(
-                labelText: 'Stop Location',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Implement route showing logic here
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Route selected!')),
-                  );
-                },
-                child: const Text('Show Route'),
-=======
       backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
         title: const Text('Item Selection'),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
-=======
-      backgroundColor: Colors.blueGrey.shade50,
-      appBar: AppBar(
-        title: const Text('Item Selection'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
->>>>>>> Stashed changes
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -216,10 +148,6 @@ class ItemDetailsScreen extends StatelessWidget {
                   color: spoil ? Colors.red : Colors.black87,
                   fontWeight: spoil ? FontWeight.bold : FontWeight.normal,
                 ),
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
               ),
             );
           }).toList(),
@@ -267,10 +195,4 @@ class ItemDetailsScreen extends StatelessWidget {
     );
   }
 }
-<<<<<<< Updated upstream
-=======
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes

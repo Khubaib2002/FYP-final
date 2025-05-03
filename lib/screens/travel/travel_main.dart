@@ -1,14 +1,19 @@
+
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:agaahi/services/auth.dart';
-import 'package:agaahi/screens/home/profile.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:csv/csv.dart';
+import 'package:http/http.dart' as http;
 
-class Travel extends StatelessWidget {
-  Travel({super.key});
+class TravelRouteScreen extends StatefulWidget {
+  const TravelRouteScreen({super.key});
 
-  final AuthService _auth = AuthService();
+  @override
+  _TravelRouteScreenState createState() => _TravelRouteScreenState();
+}
 
-<<<<<<< Updated upstream
-=======
 class _TravelRouteScreenState extends State<TravelRouteScreen> {
   GoogleMapController? _mapController;
   final TextEditingController _fromController = TextEditingController();
@@ -333,134 +338,145 @@ String _formatTime(DateTime time) {
   super.initState();
   loadTemperatureData();
   }
->>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'AGAAHI',
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              fontFamily: 'Raleway'),
-        ),
+        title: const Text('Travel Route'),
         backgroundColor: Colors.blue,
-        actions: <Widget>[
-          TextButton.icon(
-            label: const Text(
-              "Log Out",
-              style: TextStyle(color: Color.fromARGB(255, 241, 235, 183)),
-            ),
-            onPressed: () async {
-              await _auth.SignOut();
-            },
-            icon: const Icon(Icons.person,
-                color: Color.fromARGB(255, 241, 235, 183)),
-          )
-        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Profile block with user image and name
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.green[400],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Row(
-                children: [
-                  // User profile picture
-                  CircleAvatar(
-                    radius: 55,
-                    backgroundImage: AssetImage('assets/tt.png'), // Replace with user image asset path
-                  ),
-                  SizedBox(width: 15),
-                  // User name
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Muhammad \n Khubaib', // Replace with actual user name if available
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),                    ],
-                  ),
-                ],
-              ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(25.0, 67.0),
+              zoom: 10,
             ),
-            const SizedBox(height: 20),
-            // Grid layout for buttons
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2, // Two items per row
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                children: [
-                  _buildGridButton(
-                    icon: Icons.admin_panel_settings,
-                    label: 'USER ROFILE',
-                    color: Colors.grey,
-                    onPressed: ()  {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  const ProfileScreen()),
-                      );
-                    },
-                  )
-                ],
-              ),
+            onMapCreated: (controller) {
+              _mapController = controller;
+            },
+            polylines: _polylines,
+            markers: _markers,
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            right: 10,
+            child: Column(
+              children: [
+                _buildSearchField(_fromController, 'From', true),
+                const SizedBox(height: 10),
+                _buildSearchField(_toController, 'To', false),
+                if (_placeSuggestions.isNotEmpty)
+                  Container(
+                    color: Colors.white,
+                    height: 150,
+                    child: ListView.builder(
+                      itemCount: _placeSuggestions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(_placeSuggestions[index]['description']),
+                          onTap: () async {
+                            final placeId = _placeSuggestions[index]['place_id'];
+                            final coordinates = await _getCoordinates(placeId);
+
+                            setState(() {
+                              if (isSelectingFrom) {
+                                _fromLocation = coordinates;
+                                _fromController.text =
+                                    _placeSuggestions[index]['description'];
+                              } else {
+                                _toLocation = coordinates;
+                                _toController.text =
+                                    _placeSuggestions[index]['description'];
+                              }
+                              _placeSuggestions = [];
+                            });
+
+                            if (_fromLocation != null && _toLocation != null) {
+                              _fetchRoute();
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (_selectedWaypoint != null)
+  Positioned(
+    bottom: 50,
+    left: 20,
+    right: 20,
+    child: AnimatedOpacity(
+      duration: const Duration(milliseconds: 500),
+      opacity: _selectedWaypoint != null ? 1.0 : 0.0,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(color: Colors.black26, blurRadius: 10),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "🚀 Route Checkpoint",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const Divider(),
+            Text(
+              _selectedWaypointDetails ?? "",
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
+      ),
+    ),
+  ),
+
+        ],
       ),
     );
   }
 
-  Widget _buildGridButton({
-    required IconData icon,
-    required String label,
-    required Color color,
-    required VoidCallback onPressed,
-  }) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 4),
-              blurRadius: 8.0,
-            ),
-          ],
+  Widget _buildSearchField(
+      TextEditingController controller, String hint, bool isFrom) {
+    return Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(8),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hint,
+          prefixIcon: const Icon(Icons.location_on),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 50, color: Colors.white),
-            const SizedBox(height: 10),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+        onTap: () {
+          setState(() {
+            isSelectingFrom = isFrom;
+          });
+        },
+        onChanged: (value) {
+          if (value.isNotEmpty) {
+            _getPlaceSuggestions(value);
+          } else {
+            setState(() {
+              _placeSuggestions = [];
+            });
+          }
+        },
       ),
     );
   }
 }
-
