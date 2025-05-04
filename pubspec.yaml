@@ -43,6 +43,7 @@ dependencies:
   image_picker: ^0.8.7+4
   animated_text_kit: ^4.2.2
   google_fonts: ^6.2.1
+  location: ^5.0.3
   
   # activout_firebase_options_selector: ^1.0.0
   # firebase_options: 
