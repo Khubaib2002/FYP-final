@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'forecast_tile_provider.dart';
+import 'package:agaahi/config.dart';
+// final String apiKey = AppConfig.goMapsApiKey;
 
 class MapSample extends StatefulWidget {
   const MapSample({super.key});
@@ -55,7 +57,8 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _getSuggestions(String input) async {
-    const String placesApiKey = "AlzaSyHrQr9mkRUuyk_dgB3Ayq9nKHrrEpHHmMd";
+    // const String placesApiKey = "AlzaSyHrQr9mkRUuyk_dgB3Ayq9nKHrrEpHHmMd";
+    final String placesApiKey= AppConfig.goMapsApiKey;
     const String baseURL =
         'https://maps.gomaps.pro/maps/api/place/autocomplete/json';
     final String request =
@@ -78,7 +81,8 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<LatLng> _getCoordinates(String placeId) async {
-    const String placesApiKey = "AlzaSyHrQr9mkRUuyk_dgB3Ayq9nKHrrEpHHmMd";
+    // const String placesApiKey = "AlzaSyHrQr9mkRUuyk_dgB3Ayq9nKHrrEpHHmMd";
+    final String placesApiKey = AppConfig.goMapsApiKey;
     final String detailsURL =
         'https://maps.gomaps.pro/maps/api/place/details/json?place_id=$placeId&key=$placesApiKey';
 

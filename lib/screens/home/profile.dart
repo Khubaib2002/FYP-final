@@ -1,166 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:agaahi/services/auth.dart';
-
-// class ProfileScreen extends StatelessWidget {
-//   final TextEditingController _feedbackController = TextEditingController();
-//   final AuthService _auth = AuthService();
-
-//   ProfileScreen({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Colors.blue,
-//         elevation: 0,
-//         title: const Text('Profile'),
-//         actions: <Widget>[
-//           TextButton.icon(
-//             label: const Text(
-//               "Log Out",
-//               style: TextStyle(color: Color.fromARGB(255, 241, 235, 183)),
-//             ),
-//             onPressed: () async {
-//               await _auth.SignOut();
-//             },
-//             icon: const Icon(Icons.person,
-//                 color: Color.fromARGB(255, 241, 235, 183)),
-//           )
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             // Full-width header block
-//             Container(
-//               color: Colors.blue,
-//               width: double.infinity, // Full-width container
-//               padding: const EdgeInsets.symmetric(vertical: 30),
-//               child: const Column(
-//                 children: [
-//                   CircleAvatar(
-//                     radius: 40,
-//                     backgroundColor: Color.fromARGB(255, 231, 231, 231),
-//                     child: Icon(Icons.person, size: 50, color: Colors.grey),
-//                   ),
-//                   SizedBox(height: 10),
-//                   Text(
-//                     'Khubaib',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                   SizedBox(height: 5),
-//                   Text(
-//                     '03356719166',
-//                     style: TextStyle(
-//                       fontSize: 16,
-//                       color: Colors.white70,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   buildStatCard('Power', '1'),
-//                   buildStatCard('Weather Points', '0'),
-//                 ],
-//               ),
-//             ),
-//             const Padding(
-//               padding: EdgeInsets.symmetric(horizontal: 16.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     'Give Feedback',
-//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-//                   ),
-//                   SizedBox(height: 10)
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Column(
-//                 children: [
-//                   TextField(
-//                     controller: _feedbackController,
-//                     maxLines: 5,
-//                     decoration: const InputDecoration(
-//                       hintText: 'Enter your feedback here...',
-//                       border: OutlineInputBorder(),
-//                     ),
-//                   ),
-//                   const SizedBox(height: 10),
-//                   ElevatedButton(
-//                     onPressed: () async {
-//                       String feedback = _feedbackController.text.trim();
-//                       if (feedback.isNotEmpty) {
-//                         await saveFeedback(feedback);
-//                         _feedbackController.clear();
-//                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//                           content: Text('Feedback sent successfully!'),
-//                         ));
-//                       } else {
-//                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//                           content: Text('Feedback cannot be empty!'),
-//                         ));
-//                       }
-//                     },
-//                     child: const Text('Submit Feedback'),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget buildStatCard(String label, String value) {
-//     return Expanded(
-//       child: Column(
-//         children: [
-//           Text(
-//             value,
-//             style: const TextStyle(
-//               fontSize: 18,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.blue,
-//             ),
-//           ),
-//           const SizedBox(height: 5),
-//           Text(
-//             label,
-//             style: const TextStyle(fontSize: 14, color: Colors.grey),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Future<void> saveFeedback(String feedback) async {
-//     try {
-//       await FirebaseFirestore.instance.collection('feedbacks').add({
-//         'feedback': feedback,
-//         'timestamp': DateTime.now(),
-//       });
-//       print("Feedback saved to Firestore!");
-//     } catch (e) {
-//       print("Error saving feedback: $e");
-//     }
-//   }
-// }
-
 
 
 import 'package:agaahi/screens/home/homepage.dart';
@@ -172,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:agaahi/services/auth.dart';
 import 'package:agaahi/screens/home/editpro.dart';
 import 'package:agaahi/screens/home/help.dart';
+import 'package:agaahi/screens/authenticate/signin.dart';
 
 class ProfileScreen extends StatefulWidget {
   final int selectedIndex;
@@ -291,15 +129,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     label: 'Help Center',
                     screen: HelpCenterScreen(),
                   ),
-                  buildOption(
-                    context,
-                    icon: Icons.logout,
-                    label: 'Log Out',
-                    onTap: () async {
-                      await _auth.SignOut();
-                      Navigator.pop(context); // Navigate back to login
-                    },
-                  ),
+                  // buildOption(
+                  //   context,
+                  //   icon: Icons.logout,
+                  //   label: 'Log Out',
+                  //   onTap: () async {
+                  //     await _auth.SignOut();
+                  //     Navigator.pop(context); // Navigate back to login
+                  //   },
+                  // ),
+
+
+buildOption(
+  context,
+  icon: Icons.logout,
+  label: 'Log Out',
+  onTap: () async {
+    await _auth.SignOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => Signin(toggleview: () {})), // dummy function
+      (Route<dynamic> route) => false,
+    );
+  },
+),
+
+
+
+
                 ],
               ),
             ),
