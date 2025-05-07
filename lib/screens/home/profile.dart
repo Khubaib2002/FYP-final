@@ -273,12 +273,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  buildOption(
-                    context,
-                    icon: Icons.person_outline,
-                    label: 'Edit Profile',
-                    screen: EditProfileScreen(),
-                  ),
+                  // buildOption(
+                  //   context,
+                  //   icon: Icons.person_outline,
+                  //   label: 'Edit Profile',
+                  //   screen: EditProfileScreen(),
+                  // ),
                   // buildOption(
                   //   context,
                   //   icon: Icons.settings_outlined,
