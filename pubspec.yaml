@@ -36,6 +36,9 @@ dependencies:
   google_maps_flutter: ^2.2.2
   webview_flutter: ^3.0.0
   http: ^1.2.2
+
+  location: ^5.0.3
+  carousel_slider: ^4.2.1
   csv: ^6.0.0
   fl_chart: 0.69.0
   latlong2: ^0.9.1
@@ -43,8 +46,8 @@ dependencies:
   image_picker: ^0.8.7+4
   animated_text_kit: ^4.2.2
   google_fonts: ^6.2.1
-  location: ^5.0.3
   
+  dio: ^5.7.0  
   # activout_firebase_options_selector: ^1.0.0
   # firebase_options: 
   cloud_firestore: ^5.3.0  # or the latest compatible version
@@ -56,8 +59,14 @@ dependencies:
   flutter_spinkit: ^5.2.1
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true
+  image_path: "assets/icon/logo.png"
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -88,6 +97,7 @@ flutter:
       - assets/images/watermelon.png
       - assets/images/banana.png
       - assets/images/onion.png
+      - assets/images/add.png
       - assets/multan.csv
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
