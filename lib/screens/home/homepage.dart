@@ -9,7 +9,9 @@ import 'package:agaahi/services/auth.dart';
 import 'package:agaahi/screens/home/services.dart';
 import 'package:agaahi/screens/home/profile.dart';
 import 'package:agaahi/screens/maps/weather_map.dart';
-import 'package:agaahi/screens/home/tempgraph.dart';
+import 'package:agaahi/screens/home/tempgraph.dart' as tempgraph;
+import 'package:agaahi/screens/home/thumidity.dart' as humgraph;
+import 'package:agaahi/screens/home/twind.dart' as windgraph;
 
 class HomePage extends StatefulWidget {
   final int selectedIndex;
@@ -273,7 +275,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMainWeatherCard() => GestureDetector(
         onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const GraphScreen())),
+            context, MaterialPageRoute(builder: (_) => const tempgraph.GraphScreen())),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
           padding: const EdgeInsets.all(20),
@@ -315,20 +317,66 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget _buildInfoRow() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildInfoCard('Humidity', humidity, Icons.water_drop,
-                [const Color(0xFF42A5F5), const Color(0xFF0D47A1)]),
-            _buildInfoCard('Wind', windSpeed, Icons.air,
-                [const Color(0xFF64B5F6), const Color(0xFF1E88E5)]),
-            _buildInfoCard('Pressure', pressure, Icons.speed,
-                [const Color(0xFFBBDEFB), const Color(0xFF1976D2)]),
-          ],
-        ),
-      );
+
+      Widget _buildInfoRow() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const humgraph.GraphScreen()),
+              );
+            },
+            child: _buildInfoCard(
+              'Humidity',
+              humidity,
+              Icons.water_drop,
+              [const Color(0xFF42A5F5), const Color(0xFF0D47A1)],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const windgraph.GraphScreen()),
+              );
+            },
+            child: _buildInfoCard(
+            'Wind',
+            windSpeed,
+            Icons.air,
+            [const Color(0xFF64B5F6), const Color(0xFF1E88E5)],
+           ),
+          ),
+          
+          _buildInfoCard(
+            'Pressure',
+            pressure,
+            Icons.speed,
+            [const Color(0xFFBBDEFB), const Color(0xFF1976D2)],
+          ),
+        ],
+      ),
+    );
+
+
+  // Widget _buildInfoRow() => Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 20),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           _buildInfoCard('Humidity', humidity, Icons.water_drop,
+  //               [const Color(0xFF42A5F5), const Color(0xFF0D47A1)]),
+  //           _buildInfoCard('Wind', windSpeed, Icons.air,
+  //               [const Color(0xFF64B5F6), const Color(0xFF1E88E5)]),
+  //           _buildInfoCard('Pressure', pressure, Icons.speed,
+  //               [const Color(0xFFBBDEFB), const Color(0xFF1976D2)]),
+  //         ],
+  //       ),
+  //     );
 
   Widget _buildNewsCard() => Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
