@@ -144,7 +144,7 @@ Future<Map<String, dynamic>> _getWeatherForLocationAndTime(LatLng point, DateTim
   
   // Start with a time that's already rounded to 15 minutes (00, 15, 30, 45)
   int roundedMinutes = (now.minute ~/ 15) * 15;
-  DateTime startTime = DateTime(2024, now.month+4, now.day + 12, now.hour, roundedMinutes, 0);
+  DateTime startTime = DateTime(2024, now.month, now.day, now.hour, roundedMinutes, 0);
 
   for (int i = 1; i < points.length; i++) {
     LatLng prev = points[i - 1];
