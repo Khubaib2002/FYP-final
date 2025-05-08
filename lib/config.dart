@@ -1,4 +1,4 @@
 
 class AppConfig {
-  static const String goMapsApiKey = "AlzaSy5ycipD7kFf3Gk6x7ULzJGIfakAfrZRC0s";
+  static const String goMapsApiKey = "AlzaSyg5061PigZ9QWEd8zfPccq0D_b2eq2jjWt";
 }
