@@ -216,38 +216,85 @@ class _EventerState extends State<Eventer> {
   }
 
   // Update the marker with the selected weather point
+  // void _updateMarkerInfo() {
+  //   if (_selectedLocation == null || _selectedWeatherPoint == null || _selectedWeatherPoint!.isEmpty) {
+  //     return;
+  //   }
+
+  //   final formattedTime = _formatTimestamp(_selectedWeatherPoint!['display_timestamp']);
+  //   final infoText = "📍 ${_searchController.text}\n"
+  //       "🕒 Time: $formattedTime\n"
+  //       "🌡️ Temperature: ${_selectedWeatherPoint!['temperature']?.toStringAsFixed(1)}°C\n"
+  //       "💨 Wind Speed: ${_selectedWeatherPoint!['wind_speed']?.toStringAsFixed(1)} m/s\n"
+  //       "💧 Dew Point: ${_selectedWeatherPoint!['dew_point']?.toStringAsFixed(1)}°C\n"
+  //       "🌫️ Humidity: ${_selectedWeatherPoint!['humidity']?.toStringAsFixed(1)}%\n"
+  //       "📏 Lat: ${_selectedLocation!.latitude.toStringAsFixed(3)}, "
+  //       "Lng: ${_selectedLocation!.longitude.toStringAsFixed(3)}";
+
+  //   // Create a marker with an onTap to re-display the info box
+  //   final marker = Marker(
+  //     markerId: const MarkerId('selected_location'),
+  //     position: _selectedLocation!,
+  //     infoWindow: InfoWindow(title: _searchController.text, snippet: formattedTime),
+  //     onTap: () {
+  //       showInfoBox(infoText, duration: 10);
+  //     },
+  //   );
+
+  //   setState(() {
+  //     _markers = {marker};
+  //   });
+
+  //   // Show the info box initially for 10 seconds
+  //   showInfoBox(infoText, duration: 10);
+  // }
+
   void _updateMarkerInfo() {
-    if (_selectedLocation == null || _selectedWeatherPoint == null || _selectedWeatherPoint!.isEmpty) {
-      return;
-    }
-
-    final formattedTime = _formatTimestamp(_selectedWeatherPoint!['display_timestamp']);
-    final infoText = "📍 ${_searchController.text}\n"
-        "🕒 Time: $formattedTime\n"
-        "🌡️ Temperature: ${_selectedWeatherPoint!['temperature']?.toStringAsFixed(1)}°C\n"
-        "💨 Wind Speed: ${_selectedWeatherPoint!['wind_speed']?.toStringAsFixed(1)} m/s\n"
-        "💧 Dew Point: ${_selectedWeatherPoint!['dew_point']?.toStringAsFixed(1)}°C\n"
-        "🌫️ Humidity: ${_selectedWeatherPoint!['humidity']?.toStringAsFixed(1)}%\n"
-        "📏 Lat: ${_selectedLocation!.latitude.toStringAsFixed(3)}, "
-        "Lng: ${_selectedLocation!.longitude.toStringAsFixed(3)}";
-
-    // Create a marker with an onTap to re-display the info box
-    final marker = Marker(
-      markerId: const MarkerId('selected_location'),
-      position: _selectedLocation!,
-      infoWindow: InfoWindow(title: _searchController.text, snippet: formattedTime),
-      onTap: () {
-        showInfoBox(infoText, duration: 10);
-      },
-    );
-
-    setState(() {
-      _markers = {marker};
-    });
-
-    // Show the info box initially for 10 seconds
-    showInfoBox(infoText, duration: 10);
+  if (_selectedLocation == null || _selectedWeatherPoint == null || _selectedWeatherPoint!.isEmpty) {
+    return;
   }
+
+  // Get the formatted timestamp but extract only the time part
+  final formattedTimestamp = _formatTimestamp(_selectedWeatherPoint!['display_timestamp']);
+  final timeOnly = _getTimeOnly(formattedTimestamp); // Extract only time
+  
+  final infoText = "📍 ${_searchController.text}\n"
+      "🕒 Time: $timeOnly\n" // Now showing only time
+      "🌡️ Temperature: ${_selectedWeatherPoint!['temperature']?.toStringAsFixed(1)}°C\n"
+      "💨 Wind Speed: ${_selectedWeatherPoint!['wind_speed']?.toStringAsFixed(1)} m/s\n"
+      "💧 Dew Point: ${_selectedWeatherPoint!['dew_point']?.toStringAsFixed(1)}°C\n"
+      "🌫️ Humidity: ${_selectedWeatherPoint!['humidity']?.toStringAsFixed(1)}%\n"
+      "📏 Lat: ${_selectedLocation!.latitude.toStringAsFixed(3)}, "
+      "Lng: ${_selectedLocation!.longitude.toStringAsFixed(3)}";
+
+  // Create a marker with an onTap to re-display the info box
+  final marker = Marker(
+    markerId: const MarkerId('selected_location'),
+    position: _selectedLocation!,
+    infoWindow: InfoWindow(title: _searchController.text, snippet: timeOnly), // Update snippet to show only time
+    onTap: () {
+      showInfoBox(infoText, duration: 10);
+    },
+  );
+
+  setState(() {
+    _markers = {marker};
+  });
+
+  // Show the info box initially for 10 seconds
+  showInfoBox(infoText, duration: 10);
+}
+
+// Add a helper method to extract only the time part from a formatted timestamp
+String _getTimeOnly(String formattedTimestamp) {
+  // Formatted timestamp is in format "MMM dd, HH:mm"
+  // Extract only the time part (HH:mm) which comes after the comma
+  final parts = formattedTimestamp.split(', ');
+  if (parts.length > 1) {
+    return parts[1]; // Return just the time part
+  }
+  return formattedTimestamp; // Fallback to the full string if unable to parse
+}
 
   // Format timestamp for display
   String _formatTimestamp(String timestamp) {
@@ -479,60 +526,119 @@ class _EventerState extends State<Eventer> {
   }
 
   // Build the time interval selector widget
-  Widget _buildTimeIntervalSelector() {
-    // Get unique timestamps
-    final timestamps = _getUniqueTimestamps();
+  // Widget _buildTimeIntervalSelector() {
+  //   // Get unique timestamps
+  //   final timestamps = _getUniqueTimestamps();
     
-    return Container(
-      color: Colors.white.withOpacity(0.9),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: timestamps.length,
-        itemBuilder: (context, index) {
-          final timestamp = timestamps[index];
-          final isSelected = index == _selectedTimeIndex;
-          final formattedTime = _formatTimestamp(timestamp);
+  //   return Container(
+  //     color: Colors.white.withOpacity(0.9),
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       itemCount: timestamps.length,
+  //       itemBuilder: (context, index) {
+  //         final timestamp = timestamps[index];
+  //         final isSelected = index == _selectedTimeIndex;
+  //         final formattedTime = _formatTimestamp(timestamp);
           
-          return GestureDetector(
-            onTap: () => _onTimeSelected(index, timestamp),
-            child: Container(
-              width: 100,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.blue.withOpacity(0.2) : Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: isSelected ? Colors.blue : Colors.grey.shade300,
-                  width: 2,
-                ),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    formattedTime.split(', ')[0],
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.blue : Colors.black,
-                    ),
-                  ),
-                  Text(
-                    formattedTime.split(', ')[1],
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: isSelected ? Colors.blue : Colors.black87,
-                    ),
-                  ),
-                ],
+  //         return GestureDetector(
+  //           onTap: () => _onTimeSelected(index, timestamp),
+  //           child: Container(
+  //             width: 100,
+  //             margin: const EdgeInsets.symmetric(horizontal: 4),
+  //             decoration: BoxDecoration(
+  //               color: isSelected ? Colors.blue.withOpacity(0.2) : Colors.white,
+  //               borderRadius: BorderRadius.circular(8),
+  //               border: Border.all(
+  //                 color: isSelected ? Colors.blue : Colors.grey.shade300,
+  //                 width: 2,
+  //               ),
+  //             ),
+  //             padding: const EdgeInsets.all(8),
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Text(
+  //                   formattedTime.split(', ')[0],
+  //                   style: TextStyle(
+  //                     fontWeight: FontWeight.bold,
+  //                     color: isSelected ? Colors.blue : Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   formattedTime.split(', ')[1],
+  //                   style: TextStyle(
+  //                     fontSize: 16,
+  //                     color: isSelected ? Colors.blue : Colors.black87,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
+// Modified _buildTimeIntervalSelector to show current date with existing times
+Widget _buildTimeIntervalSelector() {
+  // Get unique timestamps
+  final timestamps = _getUniqueTimestamps();
+  
+  // Get current date formatted
+  final currentDate = DateFormat('MMM dd').format(DateTime.now());
+  
+  return Container(
+    color: Colors.white.withOpacity(0.9),
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: timestamps.length,
+      itemBuilder: (context, index) {
+        final timestamp = timestamps[index];
+        final isSelected = index == _selectedTimeIndex;
+        final formattedTime = _formatTimestamp(timestamp);
+        // Extract only the time part from the formatted timestamp
+        final timeOnly = formattedTime.split(', ')[1];
+        
+        return GestureDetector(
+          onTap: () => _onTimeSelected(index, timestamp),
+          child: Container(
+            width: 100,
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.blue.withOpacity(0.2) : Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: isSelected ? Colors.blue : Colors.grey.shade300,
+                width: 2,
               ),
             ),
-          );
-        },
-      ),
-    );
-  }
-
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  currentDate, // Show current date instead of timestamp date
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.blue : Colors.black,
+                  ),
+                ),
+                Text(
+                  timeOnly, // Keep the original time part
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: isSelected ? Colors.blue : Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
   // Get unique timestamps from the weather data
   List<String> _getUniqueTimestamps() {
     final timestamps = _weatherData
