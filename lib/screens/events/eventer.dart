@@ -137,7 +137,7 @@ class _EventerState extends State<Eventer> {
     // final roundedNow = DateTime(now.year, now.month, now.day, now.hour, 0).add(Duration(minutes: minutes));
 
     // Subtract 1 year
-    final adjustedTime = DateTime(roundedNow.year - 1, roundedNow.month, roundedNow.day, roundedNow.hour, roundedNow.minute);
+    final adjustedTime = DateTime(roundedNow.year - 1, roundedNow.month, roundedNow.day-9, roundedNow.hour, roundedNow.minute);
 
     print(adjustedTime);  // Output: rounded time - 1 year
     

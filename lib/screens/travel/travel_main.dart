@@ -72,8 +72,10 @@ Future<Map<String, dynamic>> _getWeatherForLocationAndTime(LatLng point, DateTim
     );
     
     // Format timestamp as "2024-MM-DDThh:mm:00" with exactly 00 seconds
-    String formattedTimestamp = "${roundedTimestamp.year}-${roundedTimestamp.month.toString().padLeft(2, '0')}-${roundedTimestamp.day.toString().padLeft(2, '0')}T${roundedTimestamp.hour.toString().padLeft(2, '0')}:${roundedTimestamp.minute.toString().padLeft(2, '0')}:00";
-    
+    // String formattedTimestamp = "${roundedTimestamp.year}-${roundedTimestamp.month.toString().padLeft(2, '0')}-${roundedTimestamp.day.toString().padLeft(2, '0')}T${roundedTimestamp.hour.toString().padLeft(2, '0')}:${roundedTimestamp.minute.toString().padLeft(2, '0')}:00";
+    String formattedTimestamp = "2024-05-08T${roundedTimestamp.hour.toString().padLeft(2, '0')}:${roundedTimestamp.minute.toString().padLeft(2, '0')}:00";
+
+
     print('Requesting weather data for: $formattedTimestamp at ${point.latitude},${point.longitude}');
     
     final response = await http.post(

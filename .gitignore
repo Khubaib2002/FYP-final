@@ -46,3 +46,4 @@ app.*.map.json
 /macos
 lib/config.dart
 lib/config.dart
+lib/config.dart
